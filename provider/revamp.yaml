@@ -1,0 +1,52 @@
+identity:
+  author: revamp
+  name: revamp
+  label:
+    en_US: Revamp
+  description:
+    en_US: Create or redesign websites and build web apps from your Dify workflows.
+      Connect Revamp, describe what you need, and keep improving your project.
+  icon: icon.svg
+  icon_dark: icon-dark.svg
+  tags:
+  - productivity
+oauth_schema:
+  client_schema:
+  - name: client_id
+    type: secret-input
+    required: true
+    label:
+      en_US: Client ID
+    help:
+      en_US: Register a Revamp OAuth client for this Dify instance. See the plugin
+        README for the callback URL and setup instructions.
+    url: https://app.revamp.dev/.well-known/oauth-authorization-server
+  - name: client_secret
+    type: secret-input
+    required: true
+    label:
+      en_US: Client Secret
+    help:
+      en_US: Register a Revamp OAuth client for this Dify instance. See the plugin
+        README for the callback URL and setup instructions.
+    url: https://app.revamp.dev/.well-known/oauth-authorization-server
+  credentials_schema:
+  - name: access_token
+    type: secret-input
+    label:
+      en_US: Access Token
+  - name: refresh_token
+    type: secret-input
+    label:
+      en_US: Refresh Token
+tools:
+- tools/start_new_website.yaml
+- tools/start_website_redesign.yaml
+- tools/start_web_app.yaml
+- tools/check_project.yaml
+- tools/refine_project.yaml
+- tools/list_projects.yaml
+- tools/list_clients.yaml
+extra:
+  python:
+    source: provider/revamp.py
