@@ -1,0 +1,88 @@
+identity:
+  name: start_web_app
+  author: revamp
+  label:
+    en_US: Build a web app
+description:
+  human:
+    en_US: Create a web app from your instructions.
+  llm: Create a Revamp web app with interactive behavior, such as a dashboard, portal
+    or booking flow. Uses Revamp credits. Use check_project with the returned projectId
+    and submissionId. Use Create a website for a website without those interactive
+    requirements.
+parameters:
+- name: name
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Web app name
+  human_description:
+    en_US: A short project name, up to 120 characters.
+  llm_description: A short project name, up to 120 characters.
+- name: brief
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Instructions
+  human_description:
+    en_US: Describe the intended users, features and behavior, up to 2,000 characters.
+  llm_description: Describe the intended users, features and behavior, up to 2,000
+    characters.
+- name: clientId
+  type: string
+  required: false
+  form: llm
+  label:
+    en_US: Client folder ID
+  human_description:
+    en_US: Optional UUID of an existing folder returned by List clients.
+  llm_description: Optional UUID of an existing folder returned by List clients.
+- name: requestReference
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Request reference
+  human_description:
+    en_US: 'A unique reference for this requested action, up to 200 characters. Reuse
+      the same reference only when retrying identical inputs; use a new reference
+      for each new project or edit. Workflow: use the source record ID plus action
+      version. Agent: choose a new UUID once per requested action.'
+  llm_description: 'A unique reference for this requested action, up to 200 characters.
+    Reuse the same reference only when retrying identical inputs; use a new reference
+    for each new project or edit. Workflow: use the source record ID plus action version.
+    Agent: choose a new UUID once per requested action.'
+extra:
+  python:
+    source: tools/start_web_app.py
+output_schema:
+  properties:
+    projectId:
+      format: uuid
+      title: Projectid
+      type: string
+    studioUrl:
+      title: Studiourl
+      type: string
+      description: Visual editing workspace; an open tab is not required for generation.
+    projectName:
+      title: Projectname
+      type: string
+    submissionId:
+      title: Submissionid
+      type: string
+      description: Use with check_project to follow this specific request.
+    status:
+      title: Status
+      type: string
+      description: Agent turn status, not build success.
+  required:
+  - projectId
+  - studioUrl
+  - projectName
+  - submissionId
+  - status
+  title: Submitted
+  type: object
