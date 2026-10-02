@@ -1,0 +1,73 @@
+identity:
+  name: refine_project
+  author: revamp
+  label:
+    en_US: Improve a project
+description:
+  human:
+    en_US: Make changes to an existing website or web app.
+  llm: Apply the requested change to the existing Revamp project. This can replace
+    prior project work and uses Revamp credits. Only invoke for a requested edit.
+    Use check_project with the returned IDs to follow it.
+parameters:
+- name: projectId
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Project ID
+  human_description:
+    en_US: The UUID of the existing Revamp project.
+  llm_description: The UUID of the existing Revamp project.
+- name: instruction
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Instructions
+  human_description:
+    en_US: The exact requested change, up to 4,000 characters.
+  llm_description: The exact requested change, up to 4,000 characters.
+- name: requestReference
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Request reference
+  human_description:
+    en_US: 'A unique reference for this requested action, up to 200 characters. Reuse
+      the same reference only when retrying identical inputs; use a new reference
+      for each new project or edit. Workflow: use the source record ID plus action
+      version. Agent: choose a new UUID once per requested action.'
+  llm_description: 'A unique reference for this requested action, up to 200 characters.
+    Reuse the same reference only when retrying identical inputs; use a new reference
+    for each new project or edit. Workflow: use the source record ID plus action version.
+    Agent: choose a new UUID once per requested action.'
+extra:
+  python:
+    source: tools/refine_project.py
+output_schema:
+  properties:
+    projectId:
+      format: uuid
+      title: Projectid
+      type: string
+    studioUrl:
+      title: Studiourl
+      type: string
+      description: Visual editing workspace; an open tab is not required for generation.
+    submissionId:
+      title: Submissionid
+      type: string
+      description: Use with check_project to follow this specific request.
+    status:
+      title: Status
+      type: string
+      description: Agent turn status, not build success.
+  required:
+  - projectId
+  - studioUrl
+  - submissionId
+  - status
+  title: Refined
+  type: object
