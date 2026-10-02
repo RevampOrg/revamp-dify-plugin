@@ -1,0 +1,98 @@
+identity:
+  name: start_website_redesign
+  author: revamp
+  label:
+    en_US: Redesign a website
+description:
+  human:
+    en_US: Redesign an existing website from its public URL.
+  llm: Start a Revamp redesign from a public website URL and optional goals, such
+    as improved visual quality or conversions. Uses Revamp credits. Use check_project
+    with the returned projectId and submissionId. Revamp does not modify the original
+    website.
+parameters:
+- name: name
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Project name
+  human_description:
+    en_US: A short project name, up to 120 characters.
+  llm_description: A short project name, up to 120 characters.
+- name: url
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Website URL
+  human_description:
+    en_US: The public HTTPS URL of the existing website. Localhost and private websites
+      are not supported.
+  llm_description: The public HTTPS URL of the existing website. Localhost and private
+    websites are not supported.
+- name: brief
+  type: string
+  required: false
+  form: llm
+  label:
+    en_US: Instructions
+  human_description:
+    en_US: Optional redesign direction and goals, up to 2,000 characters.
+  llm_description: Optional redesign direction and goals, up to 2,000 characters.
+- name: clientId
+  type: string
+  required: false
+  form: llm
+  label:
+    en_US: Client folder ID
+  human_description:
+    en_US: Optional UUID of an existing folder returned by List clients.
+  llm_description: Optional UUID of an existing folder returned by List clients.
+- name: requestReference
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Request reference
+  human_description:
+    en_US: 'A unique reference for this requested action, up to 200 characters. Reuse
+      the same reference only when retrying identical inputs; use a new reference
+      for each new project or edit. Workflow: use the source record ID plus action
+      version. Agent: choose a new UUID once per requested action.'
+  llm_description: 'A unique reference for this requested action, up to 200 characters.
+    Reuse the same reference only when retrying identical inputs; use a new reference
+    for each new project or edit. Workflow: use the source record ID plus action version.
+    Agent: choose a new UUID once per requested action.'
+extra:
+  python:
+    source: tools/start_website_redesign.py
+output_schema:
+  properties:
+    projectId:
+      format: uuid
+      title: Projectid
+      type: string
+    studioUrl:
+      title: Studiourl
+      type: string
+      description: Visual editing workspace; an open tab is not required for generation.
+    projectName:
+      title: Projectname
+      type: string
+    submissionId:
+      title: Submissionid
+      type: string
+      description: Use with check_project to follow this specific request.
+    status:
+      title: Status
+      type: string
+      description: Agent turn status, not build success.
+  required:
+  - projectId
+  - studioUrl
+  - projectName
+  - submissionId
+  - status
+  title: Submitted
+  type: object
