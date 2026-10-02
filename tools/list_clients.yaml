@@ -1,0 +1,50 @@
+identity:
+  name: list_clients
+  author: revamp
+  label:
+    en_US: List clients
+description:
+  human:
+    en_US: Find existing client folders.
+  llm: List existing client folders in the connected agency workspace. Returns an
+    empty list for a non-agency account. Use a returned clientId when creating a project
+    for that client.
+parameters: []
+extra:
+  python:
+    source: tools/list_clients.py
+output_schema:
+  $defs:
+    Client:
+      properties:
+        clientId:
+          format: uuid
+          title: Clientid
+          type: string
+        name:
+          title: Name
+          type: string
+        status:
+          enum:
+          - pitching
+          - won
+          - live
+          - maintained
+          title: Status
+          type: string
+      required:
+      - clientId
+      - name
+      - status
+      title: Client
+      type: object
+  properties:
+    clients:
+      items:
+        $ref: '#/$defs/Client'
+      title: Clients
+      type: array
+  required:
+  - clients
+  title: Clients
+  type: object
