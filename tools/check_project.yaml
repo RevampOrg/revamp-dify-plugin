@@ -1,0 +1,77 @@
+identity:
+  name: check_project
+  author: revamp
+  label:
+    en_US: Check project
+description:
+  human:
+    en_US: Check progress and get the available preview.
+  llm: Read the specific agent turn and its reply. A completed status is not proof
+    of a successful build. previewUrl is the latest available preview and may predate
+    this request; null means none is available. Use the reply to interpret the outcome.
+    This action does not start generation or a build.
+parameters:
+- name: projectId
+  type: string
+  required: true
+  form: llm
+  label:
+    en_US: Project ID
+  human_description:
+    en_US: The UUID returned by a start tool or List projects.
+  llm_description: The UUID returned by a start tool or List projects.
+- name: submissionId
+  type: string
+  required: false
+  form: llm
+  label:
+    en_US: Submission ID
+  human_description:
+    en_US: Use the submissionId from the start or refinement tool to follow that exact
+      request.
+  llm_description: Use the submissionId from the start or refinement tool to follow
+    that exact request.
+extra:
+  python:
+    source: tools/check_project.py
+output_schema:
+  properties:
+    projectId:
+      format: uuid
+      title: Projectid
+      type: string
+    studioUrl:
+      title: Studiourl
+      type: string
+      description: Visual editing workspace; an open tab is not required for generation.
+    projectName:
+      title: Projectname
+      type: string
+    status:
+      anyOf:
+      - type: string
+      - type: 'null'
+      title: Status
+      description: Agent turn status, not build success.
+    reply:
+      anyOf:
+      - type: string
+      - type: 'null'
+      title: Reply
+      description: Customer-facing agent reply. Null when no reply is available.
+    previewUrl:
+      anyOf:
+      - type: string
+      - type: 'null'
+      title: Previewurl
+      description: Latest available preview, which may predate this request. Null
+        if unavailable.
+  required:
+  - projectId
+  - studioUrl
+  - projectName
+  - status
+  - reply
+  - previewUrl
+  title: Checked
+  type: object
