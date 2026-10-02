@@ -1,0 +1,64 @@
+identity:
+  name: list_projects
+  author: revamp
+  label:
+    en_US: List projects
+description:
+  human:
+    en_US: Find your recent Revamp projects.
+  llm: List up to 30 recent Studio V2 projects owned by the connected account. Includes
+    IDs and links for checking or refining an existing project. Does not return or
+    alter legacy projects.
+parameters: []
+extra:
+  python:
+    source: tools/list_projects.py
+output_schema:
+  $defs:
+    ListedProject:
+      properties:
+        projectId:
+          format: uuid
+          title: Projectid
+          type: string
+        studioUrl:
+          title: Studiourl
+          type: string
+        name:
+          title: Name
+          type: string
+        kind:
+          enum:
+          - redesign
+          - new_project
+          title: Kind
+          type: string
+        originalUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Originalurl
+        updatedAt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Updatedat
+      required:
+      - projectId
+      - studioUrl
+      - name
+      - kind
+      title: ListedProject
+      type: object
+  properties:
+    projects:
+      items:
+        $ref: '#/$defs/ListedProject'
+      title: Projects
+      type: array
+  required:
+  - projects
+  title: Projects
+  type: object
